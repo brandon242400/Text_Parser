@@ -79,14 +79,9 @@ function AlternateNames(props) {
           </FormControl>
         </form>
         {userInput !== "" ? (
-          <Button
-            onClick={e => handleEnter(e)}
-            variant="outlined"
-            color="primary"
-            style={{ margin: "5% auto 0 auto", width: "fit-content" }}
-          >
+          <StyledButton onClick={e => handleEnter(e)} variant="outlined">
             Add Name
-          </Button>
+          </StyledButton>
         ) : null}
 
         {buttonStatus ? (
@@ -127,9 +122,22 @@ const InputField = withStyles({
   },
   focused: {
     "& $notchedOutline": {
-      borderColor: "#559 !important"
+      borderColor: "rgb(255, 165, 0, 1) !important"
     }
   }
 })(OutlinedInput);
+
+const StyledButton = withStyles({
+  root: {
+    color: "rgb(255, 165, 0, .8) !important",
+    margin: "5% auto 0 auto",
+    height: "fit-content",
+    width: "fit-content",
+    borderColor: "rgb(255, 165, 0, 0.3) !important",
+    "&:hover": {
+      borderColor: "rgb(255, 165, 0, .6) !important"
+    }
+  }
+})(Button);
 
 export default AlternateNames;

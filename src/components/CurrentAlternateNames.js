@@ -20,7 +20,6 @@ export default function CurrentAlternateNames(props) {
           style={{
             border: "1px solid #292929",
             backgroundColor: "#292929",
-            margin: "auto 10% auto 5%",
             color: "red",
             fontFamily: "'Roboto Slab', serif",
             fontSize: "125%",

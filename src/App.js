@@ -9,7 +9,8 @@ class App extends React.Component {
     super(props);
     this.state = {
       item_list: [],
-      item_name_list: []
+      item_name_list: [],
+      count_multiple_matches: false
     };
     this.updateItemNameList = this.updateItemNameList.bind(this);
   }
@@ -19,7 +20,15 @@ class App extends React.Component {
   componentDidMount() {
     if (loadList()) {
       let loadedList = loadList();
-      this.setState({ item_list: loadedList });
+      let countMultiples = localStorage.getItem(
+        ITEM_LIST_SAVE_FILE + "_multiple"
+      )
+        ? JSON.parse(localStorage.getItem(ITEM_LIST_SAVE_FILE + "_multiple"))
+        : false;
+      this.setState({
+        item_list: loadedList,
+        count_multiple_matches: countMultiples
+      });
       this.updateItemNameList(loadedList);
     } else console.log("No saved data found.");
   }
@@ -161,6 +170,22 @@ class App extends React.Component {
   }
 
   //
+  // Sets item_list to the list passed to the function
+  setItemList(newList) {
+    newList = this.sortList(newList);
+    saveList(newList);
+    this.updateItemNameList(newList);
+    this.setState({ item_list: newList });
+  }
+
+  //
+  // Sets whether or not the app will count multiple matches as one or not
+  setCountMultipleMatches(countMultiples) {
+    this.setState({ count_multiple_matches: countMultiples });
+    localStorage.setItem(ITEM_LIST_SAVE_FILE + "_multiple", countMultiples);
+  }
+
+  //
   //
   render() {
     return (
@@ -176,7 +201,14 @@ class App extends React.Component {
             removeAlternateItemName={this.removeAlternateItemName.bind(this)}
           />
         </div>
-        <TextAreaEntry />
+        <TextAreaEntry
+          list={cloneList(this.state.item_list)}
+          nameList={cloneList(this.state.item_name_list)}
+          setItemList={this.setItemList.bind(this)}
+          countMultiples={this.state.count_multiple_matches}
+          setCountMultipleMatches={this.setCountMultipleMatches.bind(this)}
+          countingMultiples={this.state.count_multiple_matches}
+        />
       </div>
     );
   }

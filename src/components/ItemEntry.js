@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { TextField, Button } from "@material-ui/core";
+import {
+  FormControl,
+  InputLabel,
+  FilledInput,
+  Button,
+  withStyles
+} from "@material-ui/core";
 
 export default function ItemEntry(props) {
   const [userInput, updateInput] = useState("");
@@ -11,39 +17,72 @@ export default function ItemEntry(props) {
 
   return (
     <div className="item-entry-container">
-      <TextField
-        label="Enter Keyword Here"
-        variant="filled"
-        value={userInput}
-        onChange={e => updateInput(e.target.value)}
-        onKeyDown={e => (e.keyCode === 13 ? handleClick() : null)}
-        style={{
-          width: "25%",
-          minWidth: "200px",
-          marginLeft: "30%",
-          fontFamily:
-            'font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif'
-        }}
-        InputLabelProps={{
-          style: {
-            color: "#66b"
-          }
-        }}
-        InputProps={{
-          style: {
-            color: "#888",
-            backgroundColor: "#252525"
-          }
-        }}
-      />
-      <Button
-        variant="outlined"
-        color="primary"
-        id="entry-button"
-        onClick={() => handleClick()}
-      >
+      <StyledForm variant="filled">
+        <StyledLabel htmlFor="component-filled-entry">Name</StyledLabel>
+        <StyledInput
+          id="component-filled-entry"
+          value={userInput}
+          onChange={e => updateInput(e.target.value)}
+          onKeyDown={e => (e.keyCode === 13 ? handleClick() : null)}
+        />
+      </StyledForm>
+      <StyledButton variant="outlined" onClick={() => handleClick()}>
         Enter
-      </Button>
+      </StyledButton>
+      <br />
     </div>
   );
 }
+
+const StyledForm = withStyles({
+  root: {
+    width: "25%",
+    minWidth: "200px",
+    marginLeft: "25%"
+  }
+})(FormControl);
+
+const StyledLabel = withStyles({
+  root: {
+    color: "#777"
+  },
+  focused: {
+    color: "#777 !important"
+  }
+})(InputLabel);
+
+const StyledInput = withStyles({
+  root: {
+    color: "#888",
+    backgroundColor: "#252525",
+    "&:hover": {
+      backgroundColor: "#282828"
+    }
+  },
+  focused: {
+    backgroundColor: "#252525 !important"
+  },
+  underline: {
+    "&:after": {
+      borderBottomColor: "rgb(255, 165, 0, 1) !important"
+    },
+    "&:before": {
+      borderBottomColor: "rgb(125,125,125,0.6)"
+    },
+    "&:hover:before": {
+      borderBottomColor: "rgba(145,145,145,1)"
+    }
+  }
+})(FilledInput);
+
+const StyledButton = withStyles({
+  root: {
+    color: "rgb(255, 165, 0, .8) !important",
+    margin: "auto auto auto 5%",
+    height: "fit-content",
+    borderColor: "rgb(255, 165, 0, 0.3) !important",
+    "&:hover": {
+      borderColor: "rgb(255, 165, 0, .6) !important"
+    }
+  }
+})(Button);
