@@ -11,7 +11,23 @@ export default function ItemEntry(props) {
   const [userInput, updateInput] = useState("");
 
   const handleClick = () => {
-    if (userInput !== "") props.addItem(userInput);
+    if (userInput !== "") {
+      props.addItem(userInput);
+      // My overengineered way of keeping animations from running over themselves
+      if (!sessionStorage.getItem("animation_count")) {
+        sessionStorage.setItem("animation_count", 1);
+        sessionStorage.setItem("item_display_count", 1);
+      } else {
+        sessionStorage.setItem(
+          "animation_count",
+          parseInt(sessionStorage.getItem("animation_count"), 10) + 1
+        );
+        sessionStorage.setItem(
+          "item_display_count",
+          parseInt(sessionStorage.getItem("animation_count"), 10)
+        );
+      }
+    }
     updateInput("");
   };
 

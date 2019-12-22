@@ -3,18 +3,27 @@ import { Grid, Button, withStyles } from "@material-ui/core";
 import AlternateNames from "./AlternateNames";
 
 export default function Item(props) {
+  !sessionStorage.getItem("rerender_count") &&
+    sessionStorage.setItem("rerender_count", 0);
+  console.log("Rerendered " + sessionStorage.getItem("rerender_count"));
+  sessionStorage.setItem(
+    "rerender_count",
+    parseInt(sessionStorage.getItem("rerender_count"), 10) + 1
+  );
   return (
     <Grid
       container
       direction="row"
       justify="space-between"
       alignItems="center"
+      className={props.item.transitionClassName}
       style={{
         border: "2px solid #777",
         padding: "0 5%",
-        margin: "1vh 0",
+        margin: "10px 0",
         borderRadius: "10px",
-        backgroundColor: "#292929"
+        backgroundColor: "#292929",
+        minHeight: "110px"
       }}
     >
       <StyledButton

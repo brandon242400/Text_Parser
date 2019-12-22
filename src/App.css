@@ -10,6 +10,12 @@ body {
   flex-wrap: wrap;
 }
 
+.clear-all-data-button {
+  text-align: right;
+  width: 100vw;
+  margin-bottom: -5vh;
+}
+
 .display-and-entry-container {
   /* border: 1px solid white; */
   width: 60vw;
@@ -28,47 +34,39 @@ body {
   width: 25vw;
 }
 
+.textarea-entry-display {
+  width: 80%;
+  height: fit-content;
+  margin: auto;
+  margin-top: 5%;
+  font-family: "Roboto Slab", serif;
+  border: 1px solid #555;
+  border-radius: 5px;
+  color: #888;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+}
+
+.textarea-entry-display h4 {
+  border: 2px solid #555;
+  border-radius: 5px;
+  padding: 5px;
+  width: 40%;
+  margin-left: 30%;
+  margin-right: 30%;
+}
+
+.textarea-entry-display p {
+  padding: 0px 5%;
+}
+
 .item-entry-container {
   margin: 0 0 0 10vw;
   width: 50vw;
   min-width: 400px;
   display: flex;
   flex-wrap: wrap;
-}
-
-#entry-button:hover {
-  border-color: #66b;
-}
-
-.button-hover {
-  font-size: 150%;
-  animation-name: button-hover-shrink;
-  animation-duration: 0.25s;
-  animation-fill-mode: forwards;
-}
-
-@keyframes button-hover-shrink {
-  from {
-    font-size: 150%;
-  }
-  to {
-    font-size: 100%;
-  }
-}
-
-.button-hover:hover {
-  animation-name: button-hover-grow;
-  animation-duration: 0.25s;
-  animation-fill-mode: forwards;
-}
-
-@keyframes button-hover-grow {
-  from {
-    font-size: 100%;
-  }
-  to {
-    font-size: 150%;
-  }
 }
 
 .current-alternate-names-container {
@@ -86,3 +84,44 @@ body {
 .alternate-name-remove-button:hover {
   margin-right: 0%;
 }
+
+.newly-added-item-transition {
+  border: 2px solid red !important;
+  position: relative;
+  right: 60vw;
+  /* animation-name: newly-added-item-slide-in;
+  animation-duration: 0.4s;
+  animation-delay: 0.2s;
+  animation-fill-mode: forwards; */
+  transition: right 0.4s;
+  transition-delay: 0.2s;
+}
+
+@keyframes newly-added-item-slide-in {
+  from {
+    right: 60vw;
+  }
+  to {
+    right: 0vw;
+  }
+}
+
+.old-item-shift-down-transition {
+  border: 2px solid green !important;
+  padding: 5px;
+  position: relative;
+  bottom: 130px;
+  animation-name: old-item-shift-down;
+  animation-duration: 0.4s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes old-item-shift-down {
+  from {
+    bottom: 130px;
+  }
+  to {
+    bottom: 0px;
+  }
+}
+/* Distance: 119.625 px */

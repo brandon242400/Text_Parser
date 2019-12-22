@@ -1,4 +1,5 @@
 import React from "react";
+import { Button, withStyles } from "@material-ui/core";
 import ItemEntry from "./components/ItemEntry";
 import ItemDisplay from "./components/ItemDisplay";
 import TextAreaEntry from "./components/TextAreaEntry";
@@ -13,13 +14,13 @@ class App extends React.Component {
       count_multiple_matches: false
     };
     this.updateItemNameList = this.updateItemNameList.bind(this);
+    this.clearAllData = this.clearAllData.bind(this);
   }
 
-  //
-  //
   componentDidMount() {
     if (loadList()) {
-      let loadedList = loadList();
+      // let loadedList = loadList();
+      let loadedList = this.LONG_TEST_LIST();
       let countMultiples = localStorage.getItem(
         ITEM_LIST_SAVE_FILE + "_multiple"
       )
@@ -33,6 +34,19 @@ class App extends React.Component {
     } else console.log("No saved data found.");
   }
 
+  LONG_TEST_LIST = () => {
+    let list = [];
+    for (let x = 0; x < 400; x++) {
+      list.push({
+        name: `name: ${x}`,
+        count: 0,
+        alternateNames: [],
+        transitionClassName: ""
+      });
+    }
+    return list;
+  };
+
   //
   // Adds item to item_list
   addItem(itemName) {
@@ -41,19 +55,26 @@ class App extends React.Component {
         "You already have this item added to your list.\n" +
           "It may be an alternate name for another item."
       );
+      return false;
     } else if (itemName.split(" ").length > 1) {
       alert("A keyword can be no longer than a single word.");
+      return false;
     } else {
       let updatedList = cloneList(this.state.item_list);
       updatedList.splice(0, 0, {
         name: itemName,
         count: 0,
-        alternateNames: []
+        alternateNames: [],
+        transitionClassName: "newly-added-item-transition"
       });
-      updatedList = this.sortList(updatedList);
+      updatedList = initializeListTransitions(
+        this.sortList(updatedList),
+        itemName
+      );
       this.setState(() => ({ item_list: updatedList }));
       this.updateItemNameList(updatedList);
       saveList(updatedList);
+      return true;
     }
   }
 
@@ -186,14 +207,38 @@ class App extends React.Component {
   }
 
   //
+  // Clears all the saved data from localStorage
+  clearAllData() {
+    let confirmation = window.confirm(
+      `Are you sure you want to reset all your entered data?`
+    );
+    if (confirmation) {
+      this.setState(() => ({
+        item_list: [],
+        item_name_list: [],
+        count_multiple_matches: false
+      }));
+      localStorage.clear();
+      sessionStorage.clear();
+    }
+  }
+
+  //
   //
   render() {
     return (
       <div className="App">
+        <div className="clear-all-data-button">
+          <StyledButton variant="outlined" onClick={() => this.clearAllData()}>
+            Clear all
+          </StyledButton>
+        </div>
+        {/* Container for the entry and item display. Basically the entire left side of the aplication */}
         <div className="display-and-entry-container">
           <ItemEntry addItem={this.addItem.bind(this)} />
           <ItemDisplay
             item_list={this.state.item_list}
+            setItemList={this.setItemList.bind(this)}
             deleteItem={this.deleteItem.bind(this)}
             incrementItemCount={this.incrementItemCount.bind(this)}
             decrementItemCount={this.decrementItemCount.bind(this)}
@@ -201,6 +246,7 @@ class App extends React.Component {
             removeAlternateItemName={this.removeAlternateItemName.bind(this)}
           />
         </div>
+        {/* The right side of the application with the exception of the 'Clear All' button */}
         <TextAreaEntry
           list={cloneList(this.state.item_list)}
           nameList={cloneList(this.state.item_name_list)}
@@ -234,3 +280,38 @@ const loadList = () => {
 const cloneList = list => {
   return JSON.parse(JSON.stringify(list));
 };
+
+const initializeListTransitions = (list, newItemName) => {
+  let passedNewItem = false;
+  return list.map(item => {
+    if (item.name === newItemName) {
+      passedNewItem = true;
+      return item;
+    } else if (passedNewItem) {
+      return {
+        name: item.name,
+        count: item.count,
+        alternateNames: item.alternateNames,
+        transitionClassName: "old-item-shift-down-transition"
+      };
+    } else
+      return {
+        name: item.name,
+        count: item.count,
+        alternateNames: item.alternateNames,
+        transitionClassName: ""
+      };
+  });
+};
+
+const StyledButton = withStyles({
+  root: {
+    margin: "2vh 1vw 0 auto",
+    color: "rgb(255, 165, 0, .8) !important",
+    height: "fit-content",
+    borderColor: "rgb(255, 165, 0, 0.3) !important",
+    "&:hover": {
+      borderColor: "rgb(255, 165, 0, .6) !important"
+    }
+  }
+})(Button);

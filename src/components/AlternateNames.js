@@ -23,6 +23,8 @@ function AlternateNames(props) {
     updateInput("");
   };
 
+  // Handle Click Away?
+
   const handleClick = () => {
     pressButton(!buttonStatus);
   };

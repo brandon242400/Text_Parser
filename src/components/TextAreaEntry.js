@@ -11,6 +11,7 @@ export default function TextAreaEntry(props) {
   const [userInput, updateInput] = React.useState("");
   const [labelWidth, updateLabelWidth] = React.useState(0);
   const labelRef = React.useRef(null);
+  const [matchedItems, updateMatchedItems] = React.useState(null);
   const LIST = JSON.parse(JSON.stringify(props.list));
   const NAME_LIST = props.nameList;
   const COUNT_MULTIPLE_MATCHES = props.countMultiples;
@@ -25,10 +26,12 @@ export default function TextAreaEntry(props) {
     updateInput("");
 
     if (matchList) {
-      getUpdatedList(props.list, matchList);
-      props.setItemList(props.list);
+      updateMatchedItems(matchList);
+      let updatedList = getUpdatedList(props.list, matchList);
+      props.setItemList(updatedList);
+      getMatchedItemJSX(matchList);
     } else {
-      alert("No keywords found in the text");
+      updateMatchedItems("Nothing matched any of your keywords");
     }
   };
 
@@ -53,7 +56,7 @@ export default function TextAreaEntry(props) {
             color: "#777"
           }}
         >
-          Paste text to be parsed
+          Paste text to be parsed here
         </InputLabel>
         <InputField
           multiline={true}
@@ -66,22 +69,87 @@ export default function TextAreaEntry(props) {
           rowsMax="60"
         />
       </StyledForm>
-      <div style={{}}>
-        <StyledButton variant="outlined">Enter</StyledButton>
-        <StyledButton
-          variant="outlined"
-          onClick={() =>
-            props.setCountMultipleMatches(!props.countingMultiples)
-          }
+      <div>
+        <div
+          style={{
+            width: "100%",
+            marginTop: "5%",
+            display: "flex",
+            justifyContent: "center"
+          }}
         >
-          {props.countingMultiples
-            ? "Don't count multiples"
-            : "Count multiples"}
-        </StyledButton>
+          <StyledButton
+            variant="outlined"
+            onClick={() => handleEnter()}
+            style={{
+              marginRight: "15%"
+            }}
+          >
+            Enter
+          </StyledButton>
+          <StyledButton variant="outlined" onClick={() => updateInput("")}>
+            Clear
+          </StyledButton>
+        </div>
+        <div style={{ width: "100%" }}>
+          <StyledButton
+            variant="outlined"
+            onClick={() =>
+              props.setCountMultipleMatches(!props.countingMultiples)
+            }
+            style={{ marginTop: "5%" }}
+          >
+            {props.countingMultiples
+              ? "Don't count multiples"
+              : "Count multiples"}
+          </StyledButton>
+        </div>
       </div>
+      {matchedItems ? (
+        <div className="textarea-entry-display">
+          <h4>Matched Items</h4>
+          {getMatchedItemJSX(matchedItems)}
+        </div>
+      ) : null}
     </div>
   );
 }
+
+//
+// Returns a list of items to put into the components return statement
+const getMatchedItemJSX = matchedList => {
+  if (typeof matchedList === "string") return <p>{matchedList}</p>;
+  let list = [];
+  for (let name of matchedList) {
+    let nameInList = false;
+    for (let item of list) {
+      if (item.name === name) {
+        list.splice(list.indexOf(item), 1, {
+          name: item.name,
+          count: item.count + 1
+        });
+        nameInList = true;
+      }
+    }
+    if (!nameInList) {
+      list.push({
+        name: name,
+        count: 1
+      });
+    }
+  }
+  // Putting the items from list in order
+  list.sort((a, b) => {
+    return b.count - a.count;
+  });
+  return list.map(item => {
+    return (
+      <p key={item.name}>
+        {item.name.charAt(0).toUpperCase() + item.name.slice(1)}: {item.count}
+      </p>
+    );
+  });
+};
 
 //
 // Returns false if no matches or a list of every match
@@ -116,7 +184,10 @@ function getListOfMatches(list, nameList, text, multipleMatches) {
   return itemsToIncrement.length > 0 ? itemsToIncrement : false;
 }
 
-const getUpdatedList = (list, itemsToIncrement) => {
+//
+// Takes the list given from props and changes the values of count to reflect the updates made
+const getUpdatedList = (oldList, itemsToIncrement) => {
+  let list = JSON.parse(JSON.stringify(oldList));
   for (let itemName of itemsToIncrement)
     for (let x = 0; x < list.length; x++) {
       if (list[x].name.toLowerCase() === itemName) {
@@ -124,6 +195,7 @@ const getUpdatedList = (list, itemsToIncrement) => {
         break;
       }
     }
+  return JSON.parse(JSON.stringify(list));
 };
 
 // Splits text up into array and makes all words lowercase
@@ -137,7 +209,7 @@ const splitText = text => {
   return splitText;
 };
 
-// Makes all the names in the list lower case to make comparison easier
+// Makes all the names in the list lower case to help with comparisons
 const listToLowerCase = list => {
   list = list.map(item => {
     let alternates = item.alternateNames.map(name => name.toLowerCase());
@@ -182,7 +254,6 @@ const InputField = withStyles({
 const StyledButton = withStyles({
   root: {
     color: "rgb(255, 165, 0, .8) !important",
-    margin: "auto",
     height: "fit-content",
     borderColor: "rgb(255, 165, 0, 0.3) !important",
     "&:hover": {
