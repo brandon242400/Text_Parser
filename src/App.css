@@ -69,32 +69,26 @@ body {
   flex-wrap: wrap;
 }
 
-.current-alternate-names-container {
-  border: 1px solid #777;
-  border-radius: 5px;
-  margin-top: 5px;
-}
-
 .alternate-name-remove-button {
   margin: auto 10% auto 5%;
   cursor: pointer;
-  transition: margin-right 0.3s;
+  transition: all 0.3s;
 }
 
 .alternate-name-remove-button:hover {
   margin-right: 0%;
+  border-color: #555 !important;
+  border-radius: 15px;
 }
 
 .newly-added-item-transition {
-  border: 2px solid red !important;
+  border: 2px solid orange !important;
   position: relative;
   right: 60vw;
-  /* animation-name: newly-added-item-slide-in;
-  animation-duration: 0.4s;
-  animation-delay: 0.2s;
-  animation-fill-mode: forwards; */
-  transition: right 0.4s;
-  transition-delay: 0.2s;
+  animation-name: newly-added-item-slide-in;
+  animation-duration: 0.3s;
+  animation-delay: 0.15s;
+  animation-fill-mode: forwards;
 }
 
 @keyframes newly-added-item-slide-in {
@@ -107,12 +101,11 @@ body {
 }
 
 .old-item-shift-down-transition {
-  border: 2px solid green !important;
   padding: 5px;
   position: relative;
   bottom: 130px;
   animation-name: old-item-shift-down;
-  animation-duration: 0.4s;
+  animation-duration: 0.3s;
   animation-fill-mode: forwards;
 }
 
@@ -124,4 +117,52 @@ body {
     bottom: 0px;
   }
 }
-/* Distance: 119.625 px */
+
+.current-alternate-names-container {
+  border: 1px solid #777;
+  border-radius: 5px;
+  margin-top: 5px;
+  height: fit-content;
+}
+
+.current-alternate-names-fade-away {
+  position: relative;
+  animation-name: alt-name-fade-away;
+  animation-duration: 0.25s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes alt-name-fade-away {
+  0% {
+    font-size: 100%;
+    height: fit-content;
+    margin-top: 5px;
+  }
+  50% {
+    font-size: 0%;
+    height: fit-content;
+    margin-top: 0px;
+  }
+  100% {
+    font-size: 0%;
+    height: 0;
+  }
+}
+
+.current-alternate-names-fade-in {
+  position: relative;
+  animation-name: alt-name-fade-in;
+  animation-duration: 0.05s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes alt-name-fade-in {
+  from {
+    font-size: 0%;
+    height: 0;
+  }
+  to {
+    font-size: 100%;
+    height: fit-content;
+  }
+}

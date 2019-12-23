@@ -6,6 +6,7 @@ export default function CurrentAlternateNames(props) {
     return (
       <div
         key={name}
+        // className={props.transitionName}
         style={{
           display: "flex",
           justifyContent: "space-evenly",
@@ -16,7 +17,7 @@ export default function CurrentAlternateNames(props) {
       >
         <button
           onClick={() => props.removeAlternateItemName(props.itemName, name)}
-          className="alternate-name-remove-button"
+          className={"alternate-name-remove-button " + props.transitionName}
           style={{
             border: "1px solid #292929",
             backgroundColor: "#292929",
@@ -34,7 +35,9 @@ export default function CurrentAlternateNames(props) {
   });
 
   return (
-    <div className="current-alternate-names-container">
+    <div
+      className={"current-alternate-names-container " + props.transitionName}
+    >
       {names.length > 0 ? (
         names
       ) : (

@@ -18,9 +18,9 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    if (loadList()) {
-      // let loadedList = loadList();
-      let loadedList = this.LONG_TEST_LIST();
+    if (false) {
+      let loadedList = loadList();
+      // let loadedList = this.LONG_TEST_LIST();
       let countMultiples = localStorage.getItem(
         ITEM_LIST_SAVE_FILE + "_multiple"
       )
@@ -74,6 +74,12 @@ class App extends React.Component {
       this.setState(() => ({ item_list: updatedList }));
       this.updateItemNameList(updatedList);
       saveList(updatedList);
+      // Removes transitionClassNames after 600ms
+      setTimeout(() => {
+        let tempList = cloneList(this.state.item_list);
+        let listWithoutTransitions = removeListTransitions(tempList);
+        this.setState(() => ({ item_list: listWithoutTransitions }));
+      }, 500);
       return true;
     }
   }
@@ -270,6 +276,7 @@ export default App;
 const ITEM_LIST_SAVE_FILE = "text_parser_app_storage_54616252";
 
 const saveList = list => {
+  list = removeListTransitions(cloneList(list));
   localStorage.setItem(ITEM_LIST_SAVE_FILE, JSON.stringify(list));
 };
 
@@ -302,6 +309,16 @@ const initializeListTransitions = (list, newItemName) => {
         transitionClassName: ""
       };
   });
+};
+
+const removeListTransitions = itemList => {
+  let result = itemList.map(list => ({
+    name: list.name,
+    count: list.count,
+    alternateNames: list.alternateNames,
+    transitionClassName: ""
+  }));
+  return result;
 };
 
 const StyledButton = withStyles({

@@ -15,6 +15,7 @@ function AlternateNames(props) {
   const [userInput, updateInput] = useState("");
   const [buttonStatus, pressButton] = useState(false);
   const [labelWidth, updateLabelWidth] = useState(0);
+  const [altDisplayName, changeAltName] = useState("");
   const labelRef = React.useRef(null);
 
   const handleEnter = e => {
@@ -23,9 +24,14 @@ function AlternateNames(props) {
     updateInput("");
   };
 
-  // Handle Click Away?
+  const handleClickAway = () => {
+    pressButton(false);
+    changeAltName("current-alternate-names-fade-away");
+  };
 
   const handleClick = () => {
+    if (buttonStatus) changeAltName("current-alternate-names-fade-away");
+    else changeAltName("current-alternate-names-fade-in");
     pressButton(!buttonStatus);
   };
 
@@ -34,7 +40,7 @@ function AlternateNames(props) {
   }, []);
 
   return (
-    <ClickAwayListener onClickAway={() => pressButton(false)}>
+    <ClickAwayListener onClickAway={handleClickAway}>
       <AlternateNameContainer>
         <form noValidate>
           <FormControl
@@ -75,7 +81,9 @@ function AlternateNames(props) {
               >
                 {buttonStatus
                   ? "Hide alternate names"
-                  : "Show current alternate names"}
+                  : "Show current alternate names (" +
+                    props.item.alternateNames.length +
+                    ")"}
               </FormHelperText>
             </Button>
           </FormControl>
@@ -85,14 +93,12 @@ function AlternateNames(props) {
             Add Name
           </StyledButton>
         ) : null}
-
-        {buttonStatus ? (
-          <AlternateDisplay
-            itemName={props.item.name}
-            nameList={props.item.alternateNames}
-            removeAlternateItemName={props.removeAlternateItemName}
-          />
-        ) : null}
+        <AlternateDisplay
+          itemName={props.item.name}
+          nameList={props.item.alternateNames}
+          removeAlternateItemName={props.removeAlternateItemName}
+          transitionName={altDisplayName}
+        />
       </AlternateNameContainer>
     </ClickAwayListener>
   );

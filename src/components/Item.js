@@ -3,13 +3,6 @@ import { Grid, Button, withStyles } from "@material-ui/core";
 import AlternateNames from "./AlternateNames";
 
 export default function Item(props) {
-  !sessionStorage.getItem("rerender_count") &&
-    sessionStorage.setItem("rerender_count", 0);
-  console.log("Rerendered " + sessionStorage.getItem("rerender_count"));
-  sessionStorage.setItem(
-    "rerender_count",
-    parseInt(sessionStorage.getItem("rerender_count"), 10) + 1
-  );
   return (
     <Grid
       container
