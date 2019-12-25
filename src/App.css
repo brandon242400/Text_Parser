@@ -69,16 +69,25 @@ body {
   flex-wrap: wrap;
 }
 
+.item-container {
+  border: 2px solid #777;
+  padding: 0 5%;
+  margin: 10px 0;
+  border-radius: 10px;
+  background-color: #292929;
+  min-height: 110px;
+}
+
 .alternate-name-remove-button {
   margin: auto 10% auto 5%;
   cursor: pointer;
-  transition: all 0.3s;
+  /* transition: margin-right 0.1s; */
+  transition: border-color 0.2s, margin-right 0.25s;
 }
 
 .alternate-name-remove-button:hover {
   margin-right: 0%;
   border-color: #555 !important;
-  border-radius: 15px;
 }
 
 .newly-added-item-transition {
@@ -101,7 +110,6 @@ body {
 }
 
 .old-item-shift-down-transition {
-  padding: 5px;
   position: relative;
   bottom: 130px;
   animation-name: old-item-shift-down;
@@ -124,24 +132,89 @@ body {
   margin-top: 5px;
   padding: 5px;
   height: fit-content;
-  /* display: block; */
+  animation-name: alt-names-container-show;
+  animation-duration: 0.16s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-out;
 }
 
-.current-alternate-names-fade-in {
-  position: relative;
-  animation-name: alt-names-fade-in;
-  animation-duration: 0.5s;
+@keyframes alt-names-container-show {
+  0% {
+    border: none;
+    border-radius: 0px;
+    margin-top: 0px;
+    height: fit-content;
+    font-size: 0px;
+    opacity: 0;
+  }
+  50% {
+    border: 1px solid #777;
+    margin-top: 5px;
+    border-radius: 5px;
+    opacity: 0;
+  }
+  100% {
+    border: 1px solid #777;
+    border-radius: 5px;
+    margin-top: 5px;
+    height: fit-content;
+    font-size: 100%;
+    opacity: 1;
+  }
+}
+
+.current-alternate-names-fade-away {
+  border: 1px solid #777;
+  border-radius: 5px;
+  margin-top: 5px;
+  height: fit-content;
+  animation-name: alt-names-container-remove;
+  animation-duration: 0.16s;
   animation-fill-mode: forwards;
   animation-timing-function: ease-in;
 }
 
-@keyframes alt-names-fade-in {
+@keyframes alt-names-container-remove {
   0% {
-    height: 0;
-    opacity: 0;
+    border: 1px solid #777;
+    border-radius: 5px;
+    margin-top: 5px;
+    height: fit-content;
+    font-size: 100%;
+    opacity: 1;
   }
-  100% {
+  50% {
+    border: none;
+    margin-top: 0px;
+    border-radius: 0px;
     height: fit-content;
     opacity: 1;
+  }
+  100% {
+    border: none;
+    border-radius: 0px;
+    margin-top: 0px;
+    height: 0;
+    font-size: 0px;
+    opacity: 0;
+  }
+}
+
+.current-alternate-names-fade-in {
+  position: relative;
+  animation-name: alt-name-fade-in;
+  animation-duration: 1.25s;
+  animation-fill-mode: forwards;
+  animation-timing-function: ease-in;
+}
+
+@keyframes alt-name-fade-in {
+  from {
+    font-size: 0%;
+    /* height: 0; */
+  }
+  to {
+    font-size: 100%;
+    /* height: fit-content; */
   }
 }
