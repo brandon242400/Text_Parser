@@ -67,7 +67,7 @@ class App extends React.Component {
         alternateNames: [],
         transitionClassName: "newly-added-item-transition"
       });
-      updatedList = initializeListTransitions(
+      updatedList = initializeListTransitionsAdd(
         this.sortList(updatedList),
         itemName
       );
@@ -79,7 +79,7 @@ class App extends React.Component {
         let tempList = cloneList(this.state.item_list);
         let listWithoutTransitions = removeListTransitions(tempList);
         this.setState(() => ({ item_list: listWithoutTransitions }));
-      }, 500);
+      }, 400);
       return true;
     }
   }
@@ -94,9 +94,16 @@ class App extends React.Component {
         break;
       }
     }
-    this.setState({ item_list: modifiedList });
+    let transitionList = initializeListTransitionsRemove(cloneList(this.state.item_list), itemName);
+    this.setState({ item_list: transitionList });
     this.updateItemNameList(modifiedList);
     saveList(modifiedList);
+    // Removes transitionClassNames after 300ms
+    setTimeout(() => {
+      let tempList = modifiedList;
+      let listWithoutTransitions = removeListTransitions(tempList);
+      this.setState(() => ({ item_list: listWithoutTransitions }));
+    }, 400);
   }
 
   //
@@ -288,18 +295,46 @@ const cloneList = list => {
   return JSON.parse(JSON.stringify(list));
 };
 
-const initializeListTransitions = (list, newItemName) => {
-  let passedNewItem = false;
+const initializeListTransitionsAdd = (list, newItemName) => {
+  let passedDeletedItem = false;
   return list.map(item => {
     if (item.name === newItemName) {
-      passedNewItem = true;
+      passedDeletedItem = true;
       return item;
-    } else if (passedNewItem) {
+    } else if (passedDeletedItem) {
       return {
         name: item.name,
         count: item.count,
         alternateNames: item.alternateNames,
         transitionClassName: "old-item-shift-down-transition"
+      };
+    } else
+      return {
+        name: item.name,
+        count: item.count,
+        alternateNames: item.alternateNames,
+        transitionClassName: ""
+      };
+  });
+};
+
+const initializeListTransitionsRemove = (list, removedItemName) => {
+  let passedDeletedItem = false;
+  return list.map(item => {
+    if (item.name === removedItemName) {
+      passedDeletedItem = true;
+      return {
+        name: item.name,
+        count: item.count,
+        alternateNames: item.alternateNames,
+        transitionClassName: "remove-item-transition"
+      };
+    } else if (passedDeletedItem) {
+      return {
+        name: item.name,
+        count: item.count,
+        alternateNames: item.alternateNames,
+        transitionClassName: "old-item-shift-up-transition"
       };
     } else
       return {

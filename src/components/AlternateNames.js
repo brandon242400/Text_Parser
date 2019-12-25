@@ -28,7 +28,7 @@ function AlternateNames(props) {
     changeAltName("current-alternate-names-fade-away");
     setTimeout(() => {
       pressButton(false);
-    }, 200);
+    }, 160);
   };
 
   const handleClick = () => {

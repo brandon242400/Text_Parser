@@ -3,9 +3,14 @@ import { Grid, Button, withStyles } from "@material-ui/core";
 import AlternateNames from "./AlternateNames";
 
 export default function Item(props) {
+  let myRef = React.createRef();
+  const printRef = () => {
+    console.log(myRef.current.getBoundingClientRect());
+  };
   return (
     <Grid
       container
+      ref={myRef}
       direction="row"
       justify="space-between"
       alignItems="center"
@@ -13,6 +18,7 @@ export default function Item(props) {
     >
       <StyledButton
         onClick={() => props.decrementItemCount(props.item.name)}
+        // onClick={() => printRef()}
         // className="button-hover"
         variant="outlined"
       >

@@ -15,7 +15,7 @@ export default function ItemEntry(props) {
   const handleClick = () => {
     if (userInput !== "") {
       let currentTime = new Date().getTime();
-      let waitDuration = 700;
+      let waitDuration = 600;
       if (!sessionStorage.getItem("animation_end_time")) {
         let endTime = currentTime + waitDuration;
         sessionStorage.setItem("animation_end_time", endTime);
