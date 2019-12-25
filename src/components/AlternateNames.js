@@ -25,14 +25,19 @@ function AlternateNames(props) {
   };
 
   const handleClickAway = () => {
-    pressButton(false);
     changeAltName("current-alternate-names-fade-away");
+    setTimeout(() => {
+      pressButton(false);
+    }, 200);
   };
 
   const handleClick = () => {
-    if (buttonStatus) changeAltName("current-alternate-names-fade-away");
-    else changeAltName("current-alternate-names-fade-in");
-    pressButton(!buttonStatus);
+    if (buttonStatus) {
+      handleClickAway();
+    } else {
+      changeAltName(false);
+      pressButton(true);
+    }
   };
 
   useEffect(() => {
@@ -93,12 +98,14 @@ function AlternateNames(props) {
             Add Name
           </StyledButton>
         ) : null}
-        <AlternateDisplay
-          itemName={props.item.name}
-          nameList={props.item.alternateNames}
-          removeAlternateItemName={props.removeAlternateItemName}
-          transitionName={altDisplayName}
-        />
+        {buttonStatus ? (
+          <AlternateDisplay
+            itemName={props.item.name}
+            nameList={props.item.alternateNames}
+            removeAlternateItemName={props.removeAlternateItemName}
+            transitionName={altDisplayName}
+          />
+        ) : null}
       </AlternateNameContainer>
     </ClickAwayListener>
   );

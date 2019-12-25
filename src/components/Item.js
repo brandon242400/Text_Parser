@@ -9,15 +9,7 @@ export default function Item(props) {
       direction="row"
       justify="space-between"
       alignItems="center"
-      className={props.item.transitionClassName}
-      style={{
-        border: "2px solid #777",
-        padding: "0 5%",
-        margin: "10px 0",
-        borderRadius: "10px",
-        backgroundColor: "#292929",
-        minHeight: "110px"
-      }}
+      className={props.item.transitionClassName + " item-container"}
     >
       <StyledButton
         onClick={() => props.decrementItemCount(props.item.name)}

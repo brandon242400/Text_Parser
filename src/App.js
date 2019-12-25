@@ -18,7 +18,7 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    if (false) {
+    if (loadList()) {
       let loadedList = loadList();
       // let loadedList = this.LONG_TEST_LIST();
       let countMultiples = localStorage.getItem(
