@@ -17,7 +17,7 @@ export default function CurrentAlternateNames(props) {
       >
         <button
           onClick={() => props.removeAlternateItemName(props.itemName, name)}
-          className={"alternate-name-remove-button " + props.transitionName}
+          className={"alternate-name-remove-button"}
           style={{
             border: "1px solid #292929",
             backgroundColor: "#292929",

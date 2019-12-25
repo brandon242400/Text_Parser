@@ -93,12 +93,13 @@ function AlternateNames(props) {
             Add Name
           </StyledButton>
         ) : null}
+        {buttonStatus ?
         <AlternateDisplay
           itemName={props.item.name}
           nameList={props.item.alternateNames}
           removeAlternateItemName={props.removeAlternateItemName}
           transitionName={altDisplayName}
-        />
+        /> : null}
       </AlternateNameContainer>
     </ClickAwayListener>
   );

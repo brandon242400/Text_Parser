@@ -122,47 +122,26 @@ body {
   border: 1px solid #777;
   border-radius: 5px;
   margin-top: 5px;
+  padding: 5px;
   height: fit-content;
-}
-
-.current-alternate-names-fade-away {
-  position: relative;
-  animation-name: alt-name-fade-away;
-  animation-duration: 0.25s;
-  animation-fill-mode: forwards;
-}
-
-@keyframes alt-name-fade-away {
-  0% {
-    font-size: 100%;
-    height: fit-content;
-    margin-top: 5px;
-  }
-  50% {
-    font-size: 0%;
-    height: fit-content;
-    margin-top: 0px;
-  }
-  100% {
-    font-size: 0%;
-    height: 0;
-  }
+  /* display: block; */
 }
 
 .current-alternate-names-fade-in {
   position: relative;
-  animation-name: alt-name-fade-in;
-  animation-duration: 0.05s;
+  animation-name: alt-names-fade-in;
+  animation-duration: 0.5s;
   animation-fill-mode: forwards;
+  animation-timing-function: ease-in;
 }
 
-@keyframes alt-name-fade-in {
-  from {
-    font-size: 0%;
+@keyframes alt-names-fade-in {
+  0% {
     height: 0;
+    opacity: 0;
   }
-  to {
-    font-size: 100%;
+  100% {
     height: fit-content;
+    opacity: 1;
   }
 }
