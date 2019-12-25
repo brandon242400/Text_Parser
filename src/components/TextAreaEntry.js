@@ -144,7 +144,7 @@ const getMatchedItemJSX = matchedList => {
   });
   return list.map(item => {
     return (
-      <p key={item.name}>
+      <p key={item.name} style={{ wordBreak: "keep-all" }}>
         {item.name.charAt(0).toUpperCase() + item.name.slice(1)}: {item.count}
       </p>
     );

@@ -94,7 +94,10 @@ class App extends React.Component {
         break;
       }
     }
-    let transitionList = initializeListTransitionsRemove(cloneList(this.state.item_list), itemName);
+    let transitionList = initializeListTransitionsRemove(
+      cloneList(this.state.item_list),
+      itemName
+    );
     this.setState({ item_list: transitionList });
     this.updateItemNameList(modifiedList);
     saveList(modifiedList);
@@ -226,11 +229,22 @@ class App extends React.Component {
       `Are you sure you want to reset all your entered data?`
     );
     if (confirmation) {
-      this.setState(() => ({
-        item_list: [],
-        item_name_list: [],
-        count_multiple_matches: false
-      }));
+      let animateItemsAway = cloneList(this.state.item_list).map(item => {
+        return {
+          name: item.name,
+          count: item.count,
+          alternateNames: item.alternateNames,
+          transitionClassName: "remove-item-transition"
+        };
+      });
+      this.setState(() => ({ item_list: animateItemsAway }));
+      setTimeout(() => {
+        this.setState(() => ({
+          item_list: [],
+          item_name_list: [],
+          count_multiple_matches: false
+        }));
+      }, 200);
       localStorage.clear();
       sessionStorage.clear();
     }

@@ -16,6 +16,7 @@ function AlternateNames(props) {
   const [buttonStatus, pressButton] = useState(false);
   const [labelWidth, updateLabelWidth] = useState(0);
   const [altDisplayName, changeAltName] = useState("");
+  const [firstRender, setFirstRender] = useState(true);
   const labelRef = React.useRef(null);
 
   const handleEnter = e => {
@@ -28,7 +29,7 @@ function AlternateNames(props) {
     changeAltName("current-alternate-names-fade-away");
     setTimeout(() => {
       pressButton(false);
-    }, 160);
+    }, 200);
   };
 
   const handleClick = () => {
@@ -37,6 +38,33 @@ function AlternateNames(props) {
     } else {
       changeAltName(false);
       pressButton(true);
+    }
+  };
+
+  const handleChange = e => {
+    updateInput(e.target.value);
+    setFirstRender(false);
+  };
+
+  const getEnterButton = () => {
+    if (userInput) {
+      return (
+        <div className="alt-names-enter-button-show">
+          <StyledButton onClick={e => handleEnter(e)} variant="outlined">
+            Add Name
+          </StyledButton>
+        </div>
+      );
+    } else if (!firstRender && !userInput) {
+      return (
+        <div className="alt-names-enter-button-remove">
+          <StyledButton onClick={e => handleEnter(e)} variant="outlined">
+            Add Name
+          </StyledButton>
+        </div>
+      );
+    } else {
+      return null;
     }
   };
 
@@ -65,7 +93,7 @@ function AlternateNames(props) {
               id={props.inputID}
               labelWidth={labelWidth}
               value={userInput}
-              onChange={e => updateInput(e.target.value)}
+              onChange={handleChange}
               onKeyDown={e => (e.keyCode === 13 ? handleEnter(e) : null)}
             />
             <Button
@@ -93,11 +121,7 @@ function AlternateNames(props) {
             </Button>
           </FormControl>
         </form>
-        {userInput !== "" ? (
-          <StyledButton onClick={e => handleEnter(e)} variant="outlined">
-            Add Name
-          </StyledButton>
-        ) : null}
+        {getEnterButton()}
         {buttonStatus ? (
           <AlternateDisplay
             itemName={props.item.name}
